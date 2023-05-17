@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import { Body, BodyText, BodyWrap, Btn, BtnBox, Container, Head, HeadText, LoginBox, LoginBtn, LoginInput, Main } from './style'
+import emailjs from '@emailjs/browser';
 const TablePage = () => {
   const [users, setUsers] = useState([])
   const [emailList, setEmailList] = useState([])
@@ -10,6 +11,7 @@ const TablePage = () => {
   const [access, setAccess] = useState(false)
   const [userPage, setUserPage] = useState(true)
   const [emailPage, setEmailPage] = useState(false)
+  const [emailSendPage, setEmailSendPage] = useState(false)
   const [smsPage, setSmsPage] = useState(false)
   const [memberPage, setMemberPage] = useState(false)
   const [id, setId] = useState('')
@@ -70,6 +72,14 @@ const onEmail = () => {
   setSmsPage(false)
   setMemberPage(false)
 };
+const onSend = () => {
+  setUserPage(false)
+  setEmailSendPage(true)
+  setEmailPage(false)
+  setSmsPage(false)
+  setMemberPage(false)
+
+};
 const onSms = () => {
   setUserPage(false)
   setEmailPage(false)
@@ -105,6 +115,7 @@ const priceRef = useRef()
         <BtnBox>
           <Btn onClick={onPayment} style={userPage ? {color:'#000', background: 'coral'} : {color: '#fff'}}>결제 내역</Btn>
           <Btn onClick={onEmail} style={emailPage ? {color:'#000', background: 'coral'} : {color: '#fff'}}>이메일</Btn>
+          <Btn onClick={onSend} style={emailSendPage ? {color:'#000', background: 'coral'} : {color: '#fff'}}>이메일보내기</Btn>
           <Btn onClick={onSms} style={smsPage ? {color:'#000', background: 'coral'} : {color: '#fff'}}>메시지</Btn>
           <Btn onClick={onMember} style={memberPage ? {color:'#000', background: 'coral'} : {color: '#fff'}}>고객</Btn>
         </BtnBox>
@@ -210,6 +221,24 @@ const priceRef = useRef()
             </Body>
           ))}
         </BodyWrap>
+      </Main>}
+       {/* MEMBER LIST */}
+       {access && emailSendPage &&
+      <Main>
+            <br></br>
+        <form >
+      <label>Name</label>
+      <input type="text" name="user_name" />
+      <br></br>
+      <br></br>
+      <label>Email</label>
+      <input type="email" name="user_email" />
+      <br></br>
+      <br></br>
+      <label>Message</label>
+      <textarea name="message" />
+      <input type="submit" value="Send" />
+    </form>
       </Main>}
       
     </Container>
